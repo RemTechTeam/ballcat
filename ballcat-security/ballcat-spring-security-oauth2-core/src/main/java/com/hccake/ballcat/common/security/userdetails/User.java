@@ -1,14 +1,18 @@
 package com.hccake.ballcat.common.security.userdetails;
 
+import com.hccake.ballcat.common.security.SecurityUser;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Hccake
@@ -18,7 +22,7 @@ import java.util.Map;
 @ToString
 @Getter
 @Builder
-public class User implements UserDetails, OAuth2User {
+public class User implements UserDetails, OAuth2User, SecurityUser {
 
 	/**
 	 * 用户ID
@@ -118,6 +122,39 @@ public class User implements UserDetails, OAuth2User {
 	@Override
 	public String getName() {
 		return this.username;
+	}
+
+	@Override
+	public Collection<String> getRoles() {
+		return Collections.emptySet();
+	}
+
+	@Override
+	public Collection<String> getPermission() {
+		if (CollectionUtils.isEmpty(authorities)) {
+			return Collections.emptySet();
+		}
+		return authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+	}
+
+	@Override
+	public boolean isAdmin() {
+		return false;
+	}
+
+	@Override
+	public boolean isSupperAdmin() {
+		return false;
+	}
+
+	@Override
+	public boolean isLock() {
+		return !isEnabled();
+	}
+
+	@Override
+	public boolean isExpired() {
+		return !isAccountNonExpired() && !isCredentialsNonExpired();
 	}
 
 }

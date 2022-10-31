@@ -37,6 +37,15 @@
 			<artifactId>jackson-databind</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.hccake</groupId>
+			<artifactId>ballcat-common-util</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>
